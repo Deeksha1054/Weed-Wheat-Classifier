@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Deployment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <h1 style="font-size: 70px;mt=5">Weed detection in Wheat crops</h1>
+    <div class="container">
+        <h1>Upload Image for Prediction</h1>
+
+        <!-- Image upload form -->
+        <form id="upload-form" action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Upload Image</button>
+        </form>
+
+        <!-- Display the uploaded image -->
+        <div id="image-preview">
+            <h3>Uploaded Image:</h3>
+            <img id="uploaded-image" src="" alt="Uploaded Image">
+        </div>
+
+        <!-- Display the prediction result -->
+        <div id="result">
+            <h3>Prediction Result:</h3>
+            <p id="prediction"></p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Handle form submission via AJAX
+            $('#upload-form').on('submit', function(event) {
+                event.preventDefault();  // Prevent the form from submitting normally
+                
+                var formData = new FormData(this);  // Get form data
+                
+                // Make AJAX request to Flask server
+                $.ajax({
+                    url: '/predict',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Show the uploaded image
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $('#uploaded-image').attr('src', e.target.result);
+                            $('#image-preview').show();
+                        }
+                        reader.readAsDataURL($('input[type=file]')[0].files[0]);
+
+                        // Show the prediction result
+                        if (response.prediction) {
+                            $('#prediction').text('Predicted Class: ' + response.prediction);
+                            $('#result').show();
+                        } else {
+                            $('#prediction').text('Error: ' + response.error);
+                            $('#result').show();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("An error occurred: " + error);
+                    }
+                });
+            });
+        });
+    </script>
+
+<!-- Main Content -->
+<div class="container">
+    <h1>Team Information</h1>
+    <button id="team-button">View Team Members</button>
+</div>
+
+<!-- Pop-up Modal -->
+<div id="team-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 style="color: #17a912;">Team Members</h2>
+        <ul>
+            <li><strong>Team Lead:</strong>  DEEKSHA R G [4MH22CA014] </li>
+            <li><strong>Teammate 2:</strong> S B GNANASHREE JAIN [4MH22CA042]</li>
+            <li><strong> Teammate 3:</strong>SIDDARAJU B R [4MH22CA047]</li>
+            <li><strong> Teammate 4:</strong>SUPRIYA S [4MH22CA051]</li>
+            <li><strong> Teammate 5:</strong>AKASHA S [4MH22CA004]</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Show modal when button is clicked
+        $('#team-button').on('click', function() {
+            $('#team-modal').fadeIn();
+        });
+
+        // Close modal when close button is clicked
+        $('.close-button').on('click', function() {
+            $('#team-modal').fadeOut();
+        });
+
+        // Close modal when clicking outside the modal content
+        $(window).on('click', function(event) {
+            if ($(event.target).is('#team-modal')) {
+                $('#team-modal').fadeOut();
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>
