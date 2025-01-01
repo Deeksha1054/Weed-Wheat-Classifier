@@ -4,6 +4,7 @@ body {
     padding: 0;
     background: url('https://static.vecteezy.com/system/resources/thumbnails/034/875/797/original/harvester-machines-working-in-wheat-field-combine-agriculture-machine-harvesting-golden-ripe-wheat-field-the-combine-mower-mechanism-cuts-the-spikelets-of-wheat-food-production-high-quality-4k-video.jpg') no-repeat center center fixed;
     background-size: cover;
+    margin-top:0;
     color: white;
 }
 
