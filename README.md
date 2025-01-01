@@ -135,3 +135,5 @@ Their expertise and mentorship have been instrumental in shaping this work.
 This project is licensed under the [MIT License](LICENSE).
 
 Feel free to contribute and enhance this repository to make it better for agricultural advancements!
+
+## THANK YOU
